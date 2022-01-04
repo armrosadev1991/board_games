@@ -5,3 +5,4 @@ I used the d3.js library to display an interactive page so all board game lovers
 
 Let's play more board games and less :video_game: :smile::smile::smile:
 
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
