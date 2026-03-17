@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Board Games</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Games Explorer</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/jquery-ui.min.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -16,116 +18,147 @@
 </head>
 
 <body>
-   
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <span>
-                    <h6>Board Games</h6>
-                </span>
-            </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Loading Board Games Data...</p>
         </div>
-        <div class="row my-row">
-            <div class="col-lg-4 col-md-8 col-sm-6">
-                <div class="row">
-                    <div>
-                        <div style="color: white;"><p>Filter your Favourite Category/Mechanic</p></div>
-                        <div style="float: left;" class="box">
+    </div>
+
+    <div class="container-fluid page-wrapper">
+
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1 class="page-title">Board Games</h1>
+            <p class="page-subtitle">Interactive Data Explorer &mdash; Mechanics, Categories &amp; Trends</p>
+        </header>
+
+        <!-- Row 1: Bubble · Line · Scatter -->
+        <div class="row panel-row">
+
+            <!-- Bubble Chart Panel -->
+            <div class="col-lg-4 col-md-12 chart-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">&#9679;</span>
+                    <h2 class="panel-title">Mechanics &amp; Categories</h2>
+                </div>
+                <div class="controls-bar">
+                    <div class="control-group">
+                        <label class="control-label" for="mechs_cat">Filter by</label>
+                        <div class="box">
                             <select id="mechs_cat">
                                 <option selected value="top_mechanic_idx">Mechanics</option>
                                 <option value="top_category_idx">Category</option>
                             </select>
                         </div>
-                        <div style="float: right;" class="box">
-                           <button>Reset Selection</button>
-                        </div>
                     </div>
+                    <button id="reset-btn" class="btn-reset" title="Clear all selections">
+                        &#8634; Reset
+                    </button>
                 </div>
                 <div id="bubble"></div>
             </div>
-            <div class="col-lg-4 col-md-2 col-sm-6">
+
+            <!-- Line Chart Panel -->
+            <div class="col-lg-4 col-md-12 chart-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">&#128200;</span>
+                    <h2 class="panel-title">N&#xBA; of Board Games Published Since 1960</h2>
+                </div>
                 <div id="my_dataviz"></div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-
-                        <h5>Year Range</h5>
-                        <div id="eventhandler"></div>
-                        <div id="scattervalues" style="display:none"></div>
-
-                    </div>
+                <div class="year-range-section">
+                    <h3 class="section-label">Year Range</h3>
+                    <div id="eventhandler"></div>
+                    <div id="scattervalues" style="display:none"></div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-3 col-sm-6">
-                <div class="row">
-                    <div class="col-lg-3 col-md-2 col-sm-6 col-xs-12 col-12">
-                        <div>
-                            <span style="margin-left: 60px;">x Axis</span>
+
+            <!-- Scatter Chart Panel -->
+            <div class="col-lg-4 col-md-12 chart-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">&#11835;</span>
+                    <h2 class="panel-title">Explore &amp; Find</h2>
+                </div>
+                <div class="axis-controls">
+                    <div class="axis-control-group">
+                        <label class="axis-label" for="var-selectx">x Axis</label>
+                        <div class="box">
+                            <select id="var-selectx">
+                                <option selected value="weight">Complexity</option>
+                                <option value="owned">Owned</option>
+                                <option value="avg_rating">Avg Rating</option>
+                                <option value="geek_rating">Geek Rating</option>
+                                <option value="num_fans">N&#xBA; of Fans</option>
+                            </select>
                         </div>
                     </div>
-                    
-                    <div style="margin-top: 3px;" class="col-lg-3 col-md-10 col-sm-6 col-xs-12 col-12">
-                        <div>
-                            <div style="float: left; margin-right: 65px;" class="box">
-                                <select id="var-selectx">
-                                    <option selected value="weight">Complexity</option>
-                                    <option value="owned">Onwned</option>
-                                    <option selected value="avg_rating">Avg Rating</option>
-                                    <option value="geek_rating">Geek Rating</option>
-                                    <option value="num_fans">Nº of fans</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-10 col-sm-6 col-xs-12 col-12">
-                        <div>
-                            <span style="margin-left: 60px;">y Axis</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 2px;" class="col-lg-3 col-md-10 col-sm-6 col-xs-12 col-12">
-                        <div  class="box">
+                    <div class="axis-control-group">
+                        <label class="axis-label" for="var-selecty">y Axis</label>
+                        <div class="box">
                             <select id="var-selecty">
                                 <option selected value="avg_rating">Avg Rating</option>
                                 <option value="geek_rating">Geek Rating</option>
-                                <option value="num_fans">Nº of fans</option>
-                                <option selected value="weight">Complexity</option>
-                                <option value="owned">Onwned</option>
+                                <option value="num_fans">N&#xBA; of Fans</option>
+                                <option value="weight">Complexity</option>
+                                <option value="owned">Owned</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div id="scatterchart"></div>
             </div>
+
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <p>TOP 3 and Compare</p>
+
+        <!-- Row 2: Radial · Search/Checklist · Selected -->
+        <div class="row panel-row">
+
+            <!-- Radial Chart Panel -->
+            <div class="col-lg-4 col-md-12 chart-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">&#9673;</span>
+                    <h2 class="panel-title">Top 3 &amp; Compare</h2>
+                </div>
                 <div id="radial-struc"></div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div style="margin-top: 3px;" id="checklist_games"></div>
-                <div><svg height = "30"></svg></div>
-                <p>Search</p>
-                <input type="text" id="filterOn" />
-                <div style="margin-top: 10px;" id="filteredList"></div>
-                
+
+            <!-- Search / Checklist Panel -->
+            <div class="col-lg-4 col-md-12 chart-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">&#9776;</span>
+                    <h2 class="panel-title">Game List</h2>
+                </div>
+                <div id="checklist_games"></div>
+                <div><svg height="10"></svg></div>
+                <div class="search-wrapper">
+                    <span class="search-icon">&#128269;</span>
+                    <input type="text" id="filterOn" placeholder="Search a game..." autocomplete="off" />
+                </div>
+                <div id="filteredList"></div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6 my-col">
+
+            <!-- Selected Games Panel -->
+            <div class="col-lg-4 col-md-12 chart-panel selected-panel">
                 <div class="selected-container">
-                    <div class="selected-header">Board Games Selected</div>
+                    <div class="selected-header">
+                        <span>&#9733;</span> Board Games Selected
+                    </div>
                     <div class="selected-body"></div>
                 </div>
             </div>
+
         </div>
+
     </div>
 
-    
     <!--Imports-->
     <script src="lib/jquery.min.js"></script>
     <script src="lib/sweetalert2.all.min.js"></script>
     <script src="lib/tether.min.js"></script>
     <script src="lib/bootstrap.min.js"></script>
     <script src="lib/d3.js"></script>
-    
 
     <!-- Custom JS -->
     <script src="js/scatterchart.js"></script>

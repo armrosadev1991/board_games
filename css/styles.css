@@ -1,78 +1,312 @@
-html,
-body {
+/* ============================================================
+   BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
   height: 100%;
   width: 100%;
-  font-family: myfont;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  font-family: myfont, sans-serif;
+  background: linear-gradient(135deg, #0d0d1a 0%, #12192e 50%, #0b2444 100%);
   background-attachment: fixed;
-  color: rgb(153, 153, 153);
+  color: rgba(200, 200, 220, 0.9);
   overflow-x: hidden;
 }
 
-.container-fluid {
-  margin: 5px;
-  animation: fadeIn 0.8s ease-in;
+/* ============================================================
+   LOADING OVERLAY
+   ============================================================ */
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #0d0d1a 0%, #12192e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+#loading-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
-.my-row {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+.loader-content {
+  text-align: center;
 }
 
-.my-row:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+.loader-spinner {
+  width: 56px;
+  height: 56px;
+  border: 4px solid rgba(102, 126, 234, 0.2);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 0.9s linear infinite;
 }
 
-h6 {
-  font-size: 48px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loader-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ============================================================
+   PAGE WRAPPER & FADE-IN
+   ============================================================ */
+.page-wrapper {
+  padding: 16px 20px 32px;
+  animation: fadeInPage 0.9s ease both;
+}
+
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.page-header {
+  text-align: center;
+  padding: 28px 0 20px;
+}
+
+.page-title {
+  font-family: myfont, sans-serif;
+  font-size: 52px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  margin: 0 0 6px;
+  background: linear-gradient(135deg, #667eea 0%, #a78bfa 50%, #f093fb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-align: center;
-  font-weight: bold;
-  font-family: myfont;
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  margin: 20px 0;
-  text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
-  animation: glow 2s ease-in-out infinite alternate;
+  animation: titleGlow 3s ease-in-out infinite alternate;
 }
 
-@keyframes glow {
-  from {
-    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
-  }
-  to {
-    filter: drop-shadow(0 0 20px rgba(118, 75, 162, 0.8));
-  }
+@keyframes titleGlow {
+  from { filter: drop-shadow(0 0 12px rgba(102, 126, 234, 0.5)); }
+  to   { filter: drop-shadow(0 0 28px rgba(167, 139, 250, 0.8)); }
 }
 
-span {
+.page-subtitle {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: rgba(180, 180, 210, 0.6);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0;
 }
 
+/* ============================================================
+   PANEL ROW
+   ============================================================ */
+.panel-row {
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
+/* ============================================================
+   CHART PANEL (replaces my-row / my-col inline styles)
+   ============================================================ */
+.chart-panel {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 20px 18px;
+  margin: 6px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.chart-panel:hover {
+  box-shadow: 0 14px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(102, 126, 234, 0.25);
+  border-color: rgba(102, 126, 234, 0.25);
+}
+
+/* ============================================================
+   PANEL HEADER
+   ============================================================ */
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.panel-icon {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.panel-title {
+  font-family: myfont, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   CONTROLS BAR (bubble chart top controls)
+   ============================================================ */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   AXIS CONTROLS (scatter chart)
+   ============================================================ */
+.axis-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.axis-control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 140px;
+}
+
+.axis-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   YEAR RANGE SECTION
+   ============================================================ */
+.year-range-section {
+  margin-top: 10px;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  margin: 10px 0 8px;
+}
+
+/* ============================================================
+   SELECT / DROPDOWN
+   ============================================================ */
+.box {
+  flex: 1;
+}
+
+.box select {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.75) 0%, rgba(118, 75, 162, 0.75) 100%);
+  color: white;
+  padding: 7px 12px;
+  font-family: myfont, sans-serif;
+  font-weight: bold;
+  font-size: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.7)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+
+.box select:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+.box select:focus {
+  border-color: #f093fb;
+  box-shadow: 0 0 0 3px rgba(240, 147, 251, 0.25);
+}
+
+/* ============================================================
+   RESET BUTTON
+   ============================================================ */
+.btn-reset {
+  font-family: myfont, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 7px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-reset:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.5) 0%, rgba(118, 75, 162, 0.5) 100%);
+  border-color: rgba(102, 126, 234, 0.6);
+  color: white;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
+}
+
+.btn-reset:active {
+  transform: scale(0.97);
+}
+
+/* Keep legacy button styles for any other buttons */
 button {
   text-align: center;
   font-size: 12px;
@@ -92,181 +326,231 @@ button {
 button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
 
 button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
 }
 
-.box select {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+/* ============================================================
+   SEARCH
+   ============================================================ */
+.search-wrapper {
+  position: relative;
+  margin: 6px 0 10px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px 16px 10px 36px;
+  border: 1.5px solid rgba(102, 126, 234, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
   color: white;
-  padding: 8px 12px;
-  font-weight: bold;
-  width: 140px;
-  height: auto;
-  float: right;
-  font-size: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  outline: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.box select:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.box select:focus {
-  border-color: #f093fb;
-  box-shadow: 0 0 0 3px rgba(240, 147, 251, 0.3);
-}
-p {
+  font-family: myfont, sans-serif;
   font-size: 13px;
-  margin: 5px 2px;
-  color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.axis .domain {
-  stroke: rgba(255, 255, 255, 0.7);
-  stroke-width: 2px;
+input[type="text"]:focus {
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2), 0 6px 20px rgba(102, 126, 234, 0.3);
 }
 
-.axis .tick line {
-  stroke: rgba(255, 255, 255, 0.3);
-  stroke-width: 1;
-  stroke-dasharray: 4, 2;
-  fill: none;
+input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.35);
 }
 
-.tick text {
-  fill: rgba(255, 255, 255, 0.9);
-  font-size: 11px;
-  font-weight: 500;
+/* ============================================================
+   FILTERED LIST & CHECKLIST
+   ============================================================ */
+#filteredList,
+#div_checks {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-h5 {
-  font-size: 16px;
+#filteredList {
+  height: 270px;
+  overflow-y: scroll;
+}
+
+#div_checks {
+  height: auto;
+  overflow-y: scroll;
+}
+
+/* ============================================================
+   SELECTED GAMES PANEL
+   ============================================================ */
+.selected-panel {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.selected-container {
+  height: 100%;
+}
+
+.selected-header {
   color: white;
+  font-family: myfont, sans-serif;
+  font-size: 13px;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin: 15px 0;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
+}
+
+.selected-body {
+  height: 420px;
+  overflow-y: scroll;
+  padding: 6px 4px;
+}
+
+/* ============================================================
+   SELECTED ELEMENT CARDS
+   ============================================================ */
+.selected-element {
+  margin: 6px 4px;
+  padding: 10px 12px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.selected-element:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+  transform: translateX(4px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+.selected-element:hover p {
+  color: white;
+}
+
+.selected-element:hover .card-title,
+.selected-element:hover .selected-title {
+  color: white;
+}
+
+.selected-title {
+  font-weight: bold;
+  background: linear-gradient(135deg, #667eea 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 13px;
+}
+
+/* ============================================================
+   CARD (game cards in selected list)
+   ============================================================ */
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: all 0.35s ease;
+  width: 42%;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 14px 32px rgba(102, 126, 234, 0.4);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+img {
+  padding: 7px;
+  width: 120px;
+  height: 50px;
+  float: left;
+}
+
+/* ============================================================
+   TYPOGRAPHY HELPERS
+   ============================================================ */
+h2 {
+  font-size: 14px;
+  color: white;
+  margin-left: 4px;
+  font-weight: bold;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-#eventhandler {
-  margin: 0 auto;
-}
 
-#labelleft,
-#labelright {
-  dominant-baseline: hanging;
-}
-
-#labelleft {
-  text-anchor: end;
-  font-size: 20px;
-}
-
-rect.selection {
-  stroke: none;
-  fill: #00699d;
-  fill-opacity: 0.5;
-}
-span {
-  font-weight: 5px;
-}
-
-#labelright {
-  text-anchor: start;
-  font-size: 20px;
-}
-.my-col {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  border-radius: 20px;
-  padding: 25px;
-  margin-top: 4px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(102, 126, 234, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all 0.4s ease;
-}
-
-.my-col:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 48px rgba(102, 126, 234, 0.5), inset 0 0 40px rgba(102, 126, 234, 0.2);
-  border-color: rgba(102, 126, 234, 0.5);
-}
-
-.selected-header {
+h5 {
+  font-size: 14px;
   color: white;
-  font-family: myfont;
-  font-size: 16px;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin-bottom: 15px;
-  padding: 10px;
+  margin: 10px 0;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s ease;
-  width: 40%;
-  backdrop-filter: blur(10px);
+p {
+  font-size: 13px;
+  margin: 4px 2px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
 }
 
-.card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-  border-color: rgba(102, 126, 234, 0.5);
+span {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
 }
 
-.game-check-search {
-  margin-left: 3px;
-}
-.game-check {
-  margin-left: 2px;
-}
-.selected-body {
-  height: 400px;
-  overflow-y: scroll;
-  font-size: 0.6em;
-  cursor: auto;
-  text-align: auto;
-  padding: 10px;
-}
-
-/* Custom Scrollbar Styling */
+/* ============================================================
+   CUSTOM SCROLLBARS
+   ============================================================ */
 .selected-body::-webkit-scrollbar,
 #filteredList::-webkit-scrollbar,
 #div_checks::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 .selected-body::-webkit-scrollbar-track,
 #filteredList::-webkit-scrollbar-track,
 #div_checks::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 
@@ -275,73 +559,50 @@ span {
 #div_checks::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 10px;
-  border: 2px solid rgba(0, 0, 0, 0.3);
 }
 
 .selected-body::-webkit-scrollbar-thumb:hover,
 #filteredList::-webkit-scrollbar-thumb:hover,
 #div_checks::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-}
-img {
-  padding: 7px;
-  width: 120px;
-  height: 50px;
-  float: left;
 }
 
-.selected-title {
-  font-weight: bold;
+/* ============================================================
+   D3 / SVG CHART ELEMENTS
+   ============================================================ */
+svg {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
 }
 
-.selected-element {
-  margin: 0.8em;
-  padding: 1em;
+.axis .domain {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1.5px;
+}
+
+.axis .tick line {
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-dasharray: 4, 3;
+  fill: none;
+}
+
+.tick text {
+  fill: rgba(255, 255, 255, 0.8);
   font-size: 11px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  transition: all 0.4s ease;
-  cursor: pointer;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
 }
 
-.selected-element:hover {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
-  transform: translateX(5px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-  border-color: rgba(102, 126, 234, 0.6);
+circle {
+  transition: all 0.25s ease;
 }
 
-.selected-element:hover p {
-  color: white;
-  font-size: 13px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.selected-element:hover .card-title {
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-h2 {
-  font-size: 14px;
-  color: white;
-  margin-left: 5px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+circle:hover {
+  filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.8));
 }
 
 .line {
   fill: none;
   stroke-width: 2px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .overlay {
@@ -350,145 +611,76 @@ h2 {
 }
 
 .focus circle {
-  fill: #f1f3f3;
-  stroke: #777;
-  stroke-width: 3px;
-}
-
-.hover-line {
-  stroke: #777;
-  stroke-width: 2px;
-  stroke-dasharray: 3, 3;
-}
-
-div.tooltip {
-  line-height: 1.4;
-  font-weight: bold;
-  padding: 15px 20px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-  color: #fff;
-  border-radius: 12px;
-  pointer-events: none;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(102, 126, 234, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  font-size: 13px;
-  animation: tooltipFadeIn 0.3s ease;
-}
-
-@keyframes tooltipFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-#div_checks {
-  height: auto;
-  overflow-y: scroll;
-  cursor: auto;
-  text-align: auto;
-}
-#filteredList {
-  height: 290px;
-  overflow-y: scroll;
-  cursor: auto;
-  text-align: auto;
-}
-#radial-struc {
-  font-size: 12px;
-  height: 500px;
-}
-
-/* Enhanced Input Fields */
-input[type="text"] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 10px 0;
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  outline: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
-}
-
-input[type="text"]:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2), 0 8px 25px rgba(102, 126, 234, 0.4);
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-input[type="text"]::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* Enhanced List Containers */
-#filteredList,
-#div_checks {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 10px;
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* SVG Chart Enhancements */
-svg {
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
-}
-
-/* Circle elements in charts */
-circle {
-  transition: all 0.3s ease;
-}
-
-circle:hover {
-  filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.8));
-}
-
-/* Line chart enhancements */
-.line {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-/* Focus elements */
-.focus circle {
   fill: #667eea;
   stroke: #f093fb;
   stroke-width: 3px;
   filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.8));
 }
 
-/* Hover line improvements */
 .hover-line {
   stroke: rgba(102, 126, 234, 0.6);
   stroke-width: 2px;
-  stroke-dasharray: 5, 5;
-  filter: drop-shadow(0 0 4px rgba(102, 126, 234, 0.5));
+  stroke-dasharray: 5, 4;
 }
 
-/* Selection rect enhancement */
 rect.selection {
   stroke: rgba(102, 126, 234, 0.8);
   stroke-width: 2px;
-  fill: rgba(102, 126, 234, 0.3);
+  fill: rgba(102, 126, 234, 0.25);
   fill-opacity: 0.5;
 }
 
-/* Additional visual polish */
-.selected-title {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 14px;
+/* ============================================================
+   TOOLTIP
+   ============================================================ */
+div.tooltip {
+  line-height: 1.5;
+  font-weight: bold;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.97) 0%, rgba(30, 20, 60, 0.97) 100%);
+  color: #fff;
+  border-radius: 12px;
+  pointer-events: none;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(102, 126, 234, 0.4);
+  border: 1px solid rgba(102, 126, 234, 0.35);
+  backdrop-filter: blur(12px);
+  font-size: 12px;
+  animation: tooltipIn 0.2s ease;
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+#eventhandler {
+  margin: 0 auto;
+}
+
+#radial-struc {
+  font-size: 12px;
+  height: 500px;
+}
+
+#labelleft {
+  dominant-baseline: hanging;
+  text-anchor: end;
+  font-size: 18px;
+}
+
+#labelright {
+  dominant-baseline: hanging;
+  text-anchor: start;
+  font-size: 18px;
+}
+
+.game-check-search {
+  margin-left: 3px;
+}
+
+.game-check {
+  margin-left: 2px;
 }
