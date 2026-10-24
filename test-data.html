@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Load Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #28a745; }
+        .error { background: #dc3545; }
+        .info { background: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>Board Games Data Load Test</h1>
+    <div id="status"></div>
+
+    <script src="lib/d3.js"></script>
+    <script>
+        const statusDiv = document.getElementById('status');
+
+        function addStatus(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = 'status ' + type;
+            div.textContent = message;
+            statusDiv.appendChild(div);
+        }
+
+        addStatus('Testing data load...', 'info');
+        addStatus('D3 version: ' + d3.version, 'info');
+        addStatus('Current URL: ' + window.location.href, 'info');
+        addStatus('Attempting to load: data/board_games_mechs_cats.json', 'info');
+
+        d3.json('data/board_games_mechs_cats.json')
+            .then(data => {
+                addStatus('✓ SUCCESS! Data loaded', 'success');
+                addStatus('Number of records: ' + data.length, 'success');
+                addStatus('Sample record: ' + JSON.stringify(data[0]).substring(0, 200) + '...', 'info');
+            })
+            .catch(error => {
+                addStatus('✗ ERROR: ' + error.message, 'error');
+                addStatus('Full error: ' + JSON.stringify(error), 'error');
+            });
+    </script>
+</body>
+</html>

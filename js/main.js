@@ -59,14 +59,33 @@ function filterDataRange(data) {
     });
 }
 
+// Add timeout fallback in case data never loads
+setTimeout(function() {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
+        console.error('Timeout: Data took too long to load');
+        loadingOverlay.innerHTML = '<div class="loader-content"><p style="color: #ff6b6b; font-size: 16px;">Error: Could not load data.<br>Please check the browser console for details.</p></div>';
+    }
+}, 10000); // 10 second timeout
+
+console.log('Starting to load board games data...');
 d3.json('data/board_games_mechs_cats.json').then(res => {
+    console.log('Data loaded successfully:', res ? 'Yes' : 'No');
+    console.log('Number of records:', res ? res.length : 0);
+
     filteredData = res;
 
-    scatterChart = new ScatterChart("#scatterchart");
-    yearChart = new YearChart('#eventhandler');
-    lineChart = new LineChart('#my_dataviz');
-    bubbleChart = new BubbleChart('#bubble');
-    radialChart = new RadialChart('#radial-struc');
+    console.log('Initializing charts...');
+    try {
+        scatterChart = new ScatterChart("#scatterchart");
+        yearChart = new YearChart('#eventhandler');
+        lineChart = new LineChart('#my_dataviz');
+        bubbleChart = new BubbleChart('#bubble');
+        radialChart = new RadialChart('#radial-struc');
+        console.log('Charts initialized successfully');
+    } catch (chartError) {
+        console.error('Error initializing charts:', chartError);
+    }
 
     d3.selectAll('g.node')
         .each(function (d) {
@@ -90,17 +109,23 @@ d3.json('data/board_games_mechs_cats.json').then(res => {
         });
 
     // Hide loading overlay after data loads and charts are initialized
+    console.log('Hiding loading overlay...');
     setTimeout(function() {
         const loadingOverlay = document.getElementById('loading-overlay');
         if (loadingOverlay) {
             loadingOverlay.classList.add('hidden');
+            console.log('Loading overlay hidden');
         }
-    }, 500);
+    }, 800);
 
 }).catch(error => {
     console.error('Error loading board games data:', error);
+    console.error('Error details:', error.message);
+    console.error('Current URL:', window.location.href);
+    console.error('Attempted data path:', window.location.origin + window.location.pathname + 'data/board_games_mechs_cats.json');
+
     const loadingOverlay = document.getElementById('loading-overlay');
     if (loadingOverlay) {
-        loadingOverlay.innerHTML = '<div class="loader-content"><p style="color: #ff6b6b;">Error loading data. Please refresh the page.</p></div>';
+        loadingOverlay.innerHTML = '<div class="loader-content"><p style="color: #ff6b6b; font-size: 16px;">Error loading data:<br>' + error.message + '<br><br>Check browser console (F12) for details.</p></div>';
     }
 });
