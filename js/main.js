@@ -59,7 +59,7 @@ function filterDataRange(data) {
     });
 }
 
-d3.json('data//board_games_mechs_cats.json').then(res => {
+d3.json('data/board_games_mechs_cats.json').then(res => {
     filteredData = res;
 
     scatterChart = new ScatterChart("#scatterchart");
@@ -89,4 +89,18 @@ d3.json('data//board_games_mechs_cats.json').then(res => {
             });
         });
 
+    // Hide loading overlay after data loads and charts are initialized
+    setTimeout(function() {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('hidden');
+        }
+    }, 500);
+
+}).catch(error => {
+    console.error('Error loading board games data:', error);
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.innerHTML = '<div class="loader-content"><p style="color: #ff6b6b;">Error loading data. Please refresh the page.</p></div>';
+    }
 });
